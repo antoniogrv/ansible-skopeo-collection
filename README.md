@@ -19,8 +19,8 @@ Run `ansible-doc -l local.skopeo` in order to list availalbe modules, roles and 
 Module | Description
 ---: | :---
 `skopeo_login`   | Perform an authentication attemp against a target registry
-`skopeo_inspect` | Inspects a container image, returning a JSON object
-`skopeo_copy`    | Copies a container image from one registry to another
+`skopeo_inspect` | Inspect a container image, returning a JSON object
+`skopeo_copy`    | Copy a container image from one registry to another
 
 # Examples
 

@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^docs/
+      - id: end-of-file-fixer
+        exclude: ^docs/
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        types:
+          - yaml
+  - repo: https://github.com/ansible/ansible-lint.git
+    rev: v24.9.2
+    hooks:
+      - id: ansible-lint
+        types:
+          - yaml
+  - repo: https://github.com/pylint-dev/pylint.git
+    rev: v3.3.1
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        require_serial: true
+        args: ["-rn", "-sn", "--rcfile=.config/.pylintrc"]

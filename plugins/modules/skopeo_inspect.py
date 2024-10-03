@@ -1,24 +1,26 @@
-# Copyright: (c) 2018, Terry Jones <terry.jones@example.org>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-from __future__ import (absolute_import, division, print_function)
+"""
+`skopeo_inspect` Ansible plugin inside the `local.skopeo` collection.
+"""
+
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: skopeo_inspect
 
 short_description: Inspects a container image, returning a JSON object
 
-version_added: "1.0.0"
+version_added: "0.1.0"
 
-description: 
+description:
     - Inspects a container image on a registry using Skopeo. Returned data is formatted as a JSON.
     - Please note that additional output may be returned (e.g. stdout_lines, stderr_lines).
 
 options:
     image_name:
-        description: | 
+        description: |
             Container image name, usually prefixed by a container transport protocol (e.g. docker://, oci://).
             Please refer to https://github.com/containers/skopeo/blob/main/docs/skopeo.1.md for more information.
             Example: docker://quay.io/namespace/image:tag
@@ -40,9 +42,9 @@ options:
 
 author:
     - Antonio Gravino (@antoniogrv)
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Inspect a remote container image
   local.skopeo.skopeo_inspect:
     image_name: quay.dev/my/image:tag
@@ -55,9 +57,9 @@ EXAMPLES = r'''
     username: my_username
     password: my_password
     tls_verify: false
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 changed:
     description: Always returns "false", as inspecting a container image doesn't persist any change.
     type: bool
@@ -68,31 +70,27 @@ return_code:
     type: int
     returned: always
     sample: 0
-'''
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ..module_utils.skopeo_command import SkopeoCommand
 
 
 def run_module():
+    """Runs the Ansible plugin."""
+
     OPERATION: str = "inspect"
 
     module_args = dict(
-        image_name=dict(type='str', required=True),
-        tls_verify=dict(type='bool', required=False, default=True),
-        username=dict(type='str', required=True),
-        password=dict(type='str', required=True, no_log=True),
+        image_name=dict(type="str", required=True),
+        tls_verify=dict(type="bool", required=False, default=True),
+        username=dict(type="str", required=True),
+        password=dict(type="str", required=True, no_log=True),
     )
 
-    result = dict(
-        changed=False,
-        return_code=''
-    )
+    result = dict(changed=False, return_code="")
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     skopeo_command_args = [
         OPERATION,
@@ -100,13 +98,13 @@ def run_module():
         f"--tls-verify={str(module.params['tls_verify'])}",
     ]
 
-    skopeo_command_args.append(module.params['image_name'])
+    skopeo_command_args.append(module.params["image_name"])
 
     skopeo = SkopeoCommand(command=skopeo_command_args)
 
-    result['return_code'] = skopeo.get_return_code()
-    result['stdout_lines'] = skopeo.get_stdout()
-    result['stderr_lines'] = skopeo.get_stderr()
+    result["return_code"] = skopeo.get_return_code()
+    result["stdout_lines"] = skopeo.get_stdout()
+    result["stderr_lines"] = skopeo.get_stderr()
 
     if module.check_mode or skopeo.failed():
         module.fail_json(skopeo.get_stderr(), **result)
@@ -114,5 +112,5 @@ def run_module():
         module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()
