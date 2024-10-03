@@ -8,7 +8,7 @@ DOCUMENTATION = r'''
 ---
 module: skopeo_inspect
 
-short_description: Inspects a container image with Skopeo
+short_description: Inspects a container image, returning a JSON object
 
 version_added: "1.0.0"
 
@@ -44,13 +44,13 @@ author:
 
 EXAMPLES = r'''
 - name: Inspect a remote container image
-  skopeo.skopeo_inspect:
+  local.skopeo.skopeo_inspect:
     image_name: quay.dev/my/image:tag
     username: my_username
     password: my_password
 
 - name: Inspect a remote container image without TLS verification
-  skopeo.skopeo_inspect:
+  local.skopeo.skopeo_inspect:
     image_name: quay.dev/my/image:tag
     username: my_username
     password: my_password
@@ -81,7 +81,7 @@ def run_module():
         image_name=dict(type='str', required=True),
         tls_verify=dict(type='bool', required=False, default=True),
         username=dict(type='str', required=True),
-        password=dict(type='str', required=True),
+        password=dict(type='str', required=True, no_log=True),
     )
 
     result = dict(

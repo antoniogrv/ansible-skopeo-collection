@@ -8,7 +8,7 @@ DOCUMENTATION = r'''
 ---
 module: skopeo_login
 
-short_description: Authenticate on a container registry with Skopeo
+short_description: Perform an authentication attemp against a target registry
 
 version_added: "1.0.0"
 
@@ -46,13 +46,13 @@ author:
 
 EXAMPLES = r'''
 - name: Perform an authentication attempo towards a container registry
-  skopeo.skopeo_login:
+  local.skopeo.skopeo_login:
     registry: quay.dev
     username: my_username
     password: my_password
 
 - name: Perform an authentication attempo towards a container registry without TLS verification
-  skopeo.skopeo_login:
+  local.skopeo.skopeo_login:
     image_name: quay.dev
     username: my_username
     password: my_password
@@ -83,7 +83,7 @@ def run_module():
         registry=dict(type='str', required=True),
         tls_verify=dict(type='bool', required=False, default=True),
         username=dict(type='str', required=True),
-        password=dict(type='str', required=True),
+        password=dict(type='str', required=True, no_log=True),
         verbose=dict(type='bool', required=False, default=False)
     )
 

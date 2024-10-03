@@ -65,19 +65,19 @@ author:
 
 EXAMPLES = r'''
 - name: Copy a container image from one registry to another, without authentication
-  skopeo.skopeo_copy:
+  local.skopeo.skopeo_copy:
     src_image: docker://source.io/my/image:tag
     dest_image: docker://destination.io/my/image:tag
 
 - name: Copy a container image from one registry to another, as an authenticated users on the destination side
-  skopeo.skopeo_copy:
+  local.skopeo.skopeo_copy:
     src_image: docker://source.io/my/image:tag
     dest_image: docker://destination.io/my/image:tag
     dest_username: my_username
     dest_password: my_password
 
 - name: Copy a container image from one registry to another, as an authenticated users on both sides and without TLS verification
-  skopeo.skopeo_copy:
+  local.skopeo.skopeo_copy:
     src_image: docker://source.io/my/image:tag
     dest_image: docker://destination.io/my/image:tag
     src_username: my_username1
@@ -114,9 +114,9 @@ def run_module():
         src_tls_verify=dict(type='bool', required=False, default=True),
         dest_tls_verify=dict(type='bool', required=False, default=True),
         src_username=dict(type='str', required=False),
-        src_password=dict(type='str', required=False),
+        src_password=dict(type='str', required=False, no_log=True),
         dest_username=dict(type='str', required=False),
-        dest_password=dict(type='str', required=False),
+        dest_password=dict(type='str', required=False, no_log=True),
     )
 
     result = dict(
