@@ -9,7 +9,7 @@ This may be handy when setting up private container registries, transfering imag
 Make sure you have the `ansible-galaxy` CLI installed, then run the following command:
 
 ```bash
-ansible-galaxy collection install <TBA>
+ansible-galaxy collection install --force https://github.com/antoniogrv/ansible-skopeo-collection/releases/download/0.1.0/local-skopeo-0.1.0.tar.gz
 ```
 
 # Usage
@@ -30,20 +30,17 @@ Module | Description
     registry: quay.dev
     username: my_username
     password: my_password
+```
 
-- name: Attemp to authenticate against the quay.dev private container registry without TLS verification
-  local-skopeo.skopeo_login:
-    image_name: quay.dev
-    username: my_username
-    password: my_password
-    tls_verify: false
-
+```yaml
 - name: Inspect a remote container image on a quay.dev private registry
   local.skopeo.skopeo_inspect:
     image_name: quay.dev/my/image:tag
     username: my_username
     password: my_password
+```
 
+```yaml
 - name: Copy a busybox image from docker.io to a quay.dev private registry
   local.skopeo.skopeo_copy:
     src_image: "docker://docker.io/busybox:1.37"
